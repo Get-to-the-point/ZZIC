@@ -39,4 +39,5 @@ public class Todo implements Serializable {
      */
     @Schema(description = "To-Do 항목의 완료 여부", example = "false")
     private Boolean done;
+
 }

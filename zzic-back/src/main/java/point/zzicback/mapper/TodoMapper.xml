@@ -7,25 +7,24 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="done" jdbcType="BOOLEAN" property="done" />
   </resultMap>
+
   <sql id="Base_Column_List">
     id, title, description, done
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from todo
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from todo
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="point.zzicback.model.Todo" useGeneratedKeys="true">
     insert into todo (title, description, done
       )
     values (#{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{done,jdbcType=BOOLEAN}
       )
   </insert>
+
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="point.zzicback.model.Todo" useGeneratedKeys="true">
     insert into todo
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -51,6 +50,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="point.zzicback.model.Todo">
     update todo
     <set>
@@ -66,6 +66,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="point.zzicback.model.Todo">
     update todo
     set title = #{title,jdbcType=VARCHAR},
@@ -73,4 +74,5 @@
       done = #{done,jdbcType=BOOLEAN}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

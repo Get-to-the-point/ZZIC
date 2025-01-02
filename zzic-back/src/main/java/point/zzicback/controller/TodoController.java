@@ -1,5 +1,6 @@
 package point.zzicback.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.ognl.ObjectMethodAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import point.zzicback.dto.request.CreateTodoRequest;
@@ -16,6 +18,7 @@ import point.zzicback.dto.response.TodoMainResponse;
 import point.zzicback.model.Todo;
 import point.zzicback.service.TodoService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +35,7 @@ import java.util.List;
 public class TodoController {
 
     private final TodoService todoService;
+    private final ObjectMapper objectMapper;
 
     /**
      * Todo 목록 조회
@@ -48,11 +52,16 @@ public class TodoController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<TodoMainResponse> getTodoList() {
-        List<Todo> todos = this.todoService.getTodoList();
-        
-        // 변환 필요
-        
-        return null;
+        List<Todo> todoList = this.todoService.getTodoList();
+        List<TodoMainResponse> todoMainResponses = new ArrayList<>();
+        for(Todo todo : todoList) { // todoList의 첫번째 Todo객체를 todo변수에 저장
+            TodoMainResponse todoMainResponse = new TodoMainResponse(); // TodoMainResponse객체를 생성하고 todo 정보를 복사
+            todoMainResponse.setId(todo.getId());
+            todoMainResponse.setTitle(todo.getTitle());
+            todoMainResponse.setDone(todo.getDone());
+            todoMainResponses.add(todoMainResponse);
+        }
+        return todoMainResponses;
     }
 
     /**
@@ -78,10 +87,11 @@ public class TodoController {
         return this.todoService.getTodoById(id);
     }
 
+
     /**
      * Todo 등록
      *
-     * <p>새로운 Todo 항목을 등록합니다.
+     * 새로운 Todo 항목을 등록합니다.
      * @param createTodoRequest 등록할 Todo 객체
      */
     @Operation(summary = "Todo 등록", description = "새로운 Todo를 등록합니다.")
@@ -96,9 +106,9 @@ public class TodoController {
     public void createTodo(
             @Parameter(description = "등록할 Todo 정보")
             @RequestBody CreateTodoRequest createTodoRequest) {
-        Todo todo = null;
-        this.todoService.createTodo(todo);
+        this.todoService.createTodo(this.objectMapper.convertValue(createTodoRequest, Todo.class));
     }
+
 
     /**
      * Todo 수정
@@ -126,6 +136,7 @@ public class TodoController {
         Todo todo = null;
         this.todoService.updateTodo(todo);
     }
+
 
     /**
      * Todo 삭제

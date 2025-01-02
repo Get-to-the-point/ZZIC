@@ -10,12 +10,7 @@
   <sql id="Base_Column_List">
     ID, TITLE, DESCRIPTION, DONE
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from TODO
-    where ID = #{id,jdbcType=BIGINT}
-  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from TODO
     where ID = #{id,jdbcType=BIGINT}

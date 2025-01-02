@@ -27,10 +27,6 @@ public interface TodoMapper {
     int updateByPrimaryKey(Todo record); // JPA의 save와 같은 역할
 
 
-    @Insert("INSERT INTO TODO (title, description)" +
-            "VALUES (#{title}, #{description})")
-    int insert(Todo record); // JPA의 save와 같은 역할
-
 
     @Select("SELECT *" +
             "FROM TODO" +
@@ -42,6 +38,14 @@ public interface TodoMapper {
     List<Todo> selectAll();
 
 
-    @Update("UPDATE todo SET done = #{done} WHERE id = #{id}")
+    @Update("UPDATE TODO SET done = #{done} WHERE id = #{id}")
     int updateDone(Todo todo);
+
+    @Insert("INSERT INTO TODO (title, description, done)" +
+            "VALUES (#{title}, #{description}), #{done}")
+    int insert(Todo record); // JPA의 save와 같은 역할
+
+
+    @Update("UPDATE TODO SET title = #{title}, description = #{description}, done = #{done}) WHERE id = #{id}")
+    void update(Todo todo);
 }

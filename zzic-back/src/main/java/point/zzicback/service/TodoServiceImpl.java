@@ -31,7 +31,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public void updateTodo(Todo todo) {
-        // 임시로 아무 작업도 하지 않음
+        this.todoMapper.update(todo);
     }
 
     @Override

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.ognl.ObjectMethodAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import point.zzicback.dto.request.CreateTodoRequest;
 import point.zzicback.dto.request.UpdateTodoRequest;
 import point.zzicback.dto.response.TodoMainResponse;
@@ -101,7 +102,7 @@ public class TodoController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터",
                     content = @Content)
     })
-    @PostMapping
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public void createTodo(
             @Parameter(description = "등록할 Todo 정보")
@@ -133,7 +134,26 @@ public class TodoController {
             @PathVariable Integer id,
             @Parameter(description = "수정할 Todo 정보")
             @RequestBody UpdateTodoRequest updateTodoRequest) {
-        Todo todo = null;
+
+        // 1. id를 사용해서 기존 Todo를 가져오기
+        Todo todo = this.todoService.findTodoById(id);
+        if(todo == null) {
+            // todo가 존재하지 않으면 예외 처리
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 Todo를 찾을 수 없음");
+        }
+
+        // 2. updateTodoRequest에 담긴 정보로 Todo 수정
+        if(updateTodoRequest.getTitle() != null) {
+            todo.setTitle(updateTodoRequest.getTitle());
+        }
+        if(updateTodoRequest.getDescription() != null) {
+            todo.setDescription(updateTodoRequest.getDescription());
+        }
+        if(updateTodoRequest.getDone() != null) {
+            todo.setDone(updateTodoRequest.getDone());
+        }
+
+        // 3. 수정된 Todo를 서비스에 전달
         this.todoService.updateTodo(todo);
     }
 

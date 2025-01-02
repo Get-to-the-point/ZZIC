@@ -58,10 +58,19 @@ public class TodoController {
     @ResponseStatus(HttpStatus.OK)
     public List<TodoMainResponse> getTodoList() {
         List<Todo> todos = this.todoService.getTodoList();
-        
+
         // 변환 필요
+        return todos.stream()
+                .map(todo -> {
+                    TodoMainResponse response = new TodoMainResponse();
+                    response.setId(todo.getId());
+                    response.setTitle(todo.getTitle());
+                    response.setDone(todo.getDone());
+                    return response;
+                })
+                .toList();
         
-        return null;
+//        return null;
     }
 
     /**
@@ -105,7 +114,10 @@ public class TodoController {
     public void createTodo(
             @Parameter(description = "등록할 Todo 정보")
             @RequestBody CreateTodoRequest createTodoRequest) {
-        Todo todo = null;
+//        Todo todo = null;
+        Todo todo = new Todo();
+        todo.setTitle(createTodoRequest.getTitle());
+        todo.setDescription(createTodoRequest.getDescription());
         this.todoService.createTodo(todo);
     }
 
@@ -132,7 +144,12 @@ public class TodoController {
             @PathVariable Integer id,
             @Parameter(description = "수정할 Todo 정보")
             @RequestBody UpdateTodoRequest updateTodoRequest) {
-        Todo todo = null;
+//        Todo todo = null;
+        Todo todo = new Todo();
+        todo.setId(Long.valueOf(id));
+        todo.setTitle(updateTodoRequest.getTitle());
+        todo.setDescription(updateTodoRequest.getDescription());
+        todo.setDone(updateTodoRequest.getDone());
         this.todoService.updateTodo(todo);
     }
 

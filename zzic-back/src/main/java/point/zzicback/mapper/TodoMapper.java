@@ -1,8 +1,9 @@
 package point.zzicback.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import point.zzicback.model.Todo;
+
+import java.util.List;
 
 @Mapper
 public interface TodoMapper {
@@ -28,4 +29,19 @@ public interface TodoMapper {
     int updateByPrimaryKeySelective(Todo record);  // JPA의 save와 같은 역할
 
     int updateByPrimaryKey(Todo record); // JPA의 save와 같은 역할
+
+    @Select("SELECT * FROM TODO")
+    List<Todo> selectAll();
+
+    @Select("SELECT * FROM TODO WHERE ID = #{id}")
+    Todo selectById(Long id);
+
+    @Insert("INSERT INTO TODO(title, description) VALUES(#{title}, #{description})")
+    void createTodo(Todo todo);
+
+    @Update("UPDATE TODO SET title=#{title}, description=#{description}, done=#{done} WHERE id = #{id}")
+    void updateTodo(Todo todo);
+
+    @Delete("DELETE FROM TODO WHERE id = #{id}")
+    void deleteTodo(Long id);
 }

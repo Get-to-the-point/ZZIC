@@ -1,12 +1,14 @@
 package point.zzicback.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Schema(description = "To-Do 생성 요청"
         , requiredProperties = {"title"}
 )
+
 public class CreateTodoRequest {
     @Schema(description = "To-Do 항목의 제목", example = "장보기")
     private String title;

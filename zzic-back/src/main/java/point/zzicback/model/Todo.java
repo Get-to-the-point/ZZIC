@@ -1,6 +1,7 @@
 package point.zzicback.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @Schema(description = "TO-DO 항목을 표현하는 모델")
+@Builder
 public class Todo implements Serializable {
     private static final long serialVersionUID = 1L;
 

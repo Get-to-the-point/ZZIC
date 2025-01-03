@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+	<h2>할 일 제목 : <span th:text = "${todo.title}"></span></h2>
+	<p> 할 일 설명 : <span th:text = "${todo.description}"></span></p>
+	<p> 상태: <span th:text = "${todo.done}?'완료':'미완료'"></span></p>
+	<a th:href="@{/todos}">목록으로 돌아가기</a>
+</body>
+</html>

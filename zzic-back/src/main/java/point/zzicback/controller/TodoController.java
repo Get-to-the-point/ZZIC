@@ -1,5 +1,6 @@
 package point.zzicback.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -17,7 +18,10 @@ import point.zzicback.dto.response.TodoMainResponse;
 import point.zzicback.model.Todo;
 import point.zzicback.service.TodoService;
 
+import javax.swing.plaf.TabbedPaneUI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Todo API 컨트롤러
@@ -33,6 +37,7 @@ import java.util.List;
 public class TodoController {
 
     private final TodoService todoService;
+    private final ObjectMapper objectMapper;
 
     /**
      * Todo 목록 조회
@@ -58,10 +63,20 @@ public class TodoController {
     @ResponseStatus(HttpStatus.OK)
     public List<TodoMainResponse> getTodoList() {
         List<Todo> todos = this.todoService.getTodoList();
-        
+
+//        List<TodoMainResponse> todoMainResponses = new ArrayList<>();
+//        for(Todo todo : todos){
+//            TodoMainResponse todoMainResponse = new TodoMainResponse();
+//            todoMainResponse.setId(todo.getId());
+//            todoMainResponse.setTitle(todo.getTitle());
+//            todoMainResponse.setDone(todo.getDone());
+//            todoMainResponses.add(todoMainResponse);
+//        }
+        List<TodoMainResponse> todoMainResponses =todos.stream()
+                .map(todo -> objectMapper.convertValue(todo,TodoMainResponse.class))
+                .collect(Collectors.toList());
         // 변환 필요
-        
-        return null;
+        return todoMainResponses;
     }
 
     /**
@@ -81,7 +96,7 @@ public class TodoController {
     })
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Todo getTodo(
+    public Todo getTodo( //내부데이터 객체를 외부데이터DTO로 바꿔준다
             @Parameter(description = "조회할 Todo의 ID")
             @PathVariable Long id) {
         return this.todoService.getTodoById(id);
@@ -102,10 +117,14 @@ public class TodoController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTodo(
+    public void createTodo(   //외부데이터 DTO를 내부데이터 객체로 보내준다
             @Parameter(description = "등록할 Todo 정보")
             @RequestBody CreateTodoRequest createTodoRequest) {
-        Todo todo = null;
+//        Todo todo = Todo.builder()
+//                .title(createTodoRequest.getTitle())
+//                .description(createTodoRequest.getDescription())
+//                .build();
+          Todo todo = objectMapper.convertValue(createTodoRequest,Todo.class);
         this.todoService.createTodo(todo);
     }
 
@@ -129,10 +148,16 @@ public class TodoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateTodo(
             @Parameter(description = "수정할 Todo의 ID")
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @Parameter(description = "수정할 Todo 정보")
             @RequestBody UpdateTodoRequest updateTodoRequest) {
-        Todo todo = null;
+//        Todo todo = Todo.builder()
+//                .id(id)
+//                .title(updateTodoRequest.getTitle())
+//                .description(updateTodoRequest.getDescription())
+//                .done(updateTodoRequest.getDone())
+//                .build();
+          Todo todo = objectMapper.convertValue(updateTodoRequest,Todo.class);
         this.todoService.updateTodo(todo);
     }
 

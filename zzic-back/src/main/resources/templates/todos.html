@@ -1,46 +1,60 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>ZZIC Todo List</title>
+	<meta charset="UTF-8">
+	<title>ZZIC Todo List</title>
 </head>
 <body>
 <div style="background-color: lightgray;">
-  <h2>Todo</h2>
-  </div>
- <div>
-  <form method="POST" action="/todos">
-    <input type="text" name="title"/>
-    <input name="description" />
-    <button type="submit">
-      할 일 추가
-    </button>
-</form>
- </div>
+	<h2>Todo</h2>
+</div>
+<div>
+	<form method="POST" action="/todos">
+		<input type="text" name="title" />
+		<input name="description" />
+		<button type="submit">
+			할 일 추가
+		</button>
+	</form>
+</div>
 
 <h2>할 일</h2>
 
 <div th:each="todo :${todos}" class="wrap">
-  <form>
-    <button>완료</button>
-  </form>
-  <div>
-    <a th:href="@{/todos/{id}(id=${todo.id})}" th:text="${todo.title}">제목</a>
-  </div>
+	<form method="POST" th:action="@{/todos/{id}/toggle(id=${todo.id})}">
+		<button type="submit">완료</button>
+	</form>
+	<div>
+		<a th:href="@{/todos/{id}(id=${todo.id})}" th:text="${todo.title}">제목</a>
+	</div>
 
-  <form method="POST" th:action="@{todos/{id}(id=${todo.id})}">
-    <input type="hidden" name="_method" value="DELETE">
-    <button type="submit"  >삭제</button>
-  </form>
+	<form method="POST" th:action="@{todos/{id}(id=${todo.id})}">
+		<input type="hidden" name="_method" value="DELETE">
+		<button type="submit">삭제</button>
+	</form>
+</div>
 
-  </div>
+<h2>한 일</h2>
+
+<div th:each="todo :${completedTodos}" class="wrap">
+	<form method="POST" th:action="@{/todos/{id}/toggle(id=${todo.id})}">
+		<button type="submit">미완료</button>
+	</form>
+	<div>
+		<a th:href="@{/todos/{id}(id=${todo.id})}" th:text="${todo.title}">제목</a>
+	</div>
+	<form method="POST" th:action="@{/todos/{id}(id=${todo.id})}">
+		<input type="hidden" name="_method" value="DELETE">
+		<button type="submit">삭제</button>
+	</form>
+</div>
 <style>
-  .wrap {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin: 10px;
-  }
+    .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 10px;
+    }
 </style>
 </body>
 </html>

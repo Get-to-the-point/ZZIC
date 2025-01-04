@@ -5,19 +5,13 @@
 	<title>Title</title>
 </head>
 <body>
+
 <div>
 	<h2>할 일 제목 : <span th:text = "${todo.title}"></span></h2>
 	<p> 할 일 설명 : <span th:text = "${todo.description}"></span></p>
 	<p> 상태: <span th:text = "${todo.done}?'완료':'미완료'"></span></p>
 
-	<form
-		method="POST" th:action="@{/todos/{id}(id=${todo.id})}">
-		<input type="hidden" name="_method" value="PUT">
-		<input type="text" name="title" placeholder="제목"/>
-		<input name="description" placeholder="설명" />
-		<input type="hidden" name ="done" th:value ="${todo.done}"/>
-		<button type="submit"  >수정</button>
-	</form>
+	<a th:href="@{/todos/{id}/update(id=${todo.id})}">수정하기</a>
 
 	<div>
 	<a th:href="@{/todos}">목록으로 돌아가기</a>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<div>
+
+	<form
+		method="POST" th:action="@{/todos/{id}(id=${todo.id})}">
+		<input type="hidden" name="_method" value="PUT">
+		<input type="text" name="title" placeholder="제목" th:value="${todo.title}"/>
+		<input name="description" placeholder="설명" th:value="${todo.description}"/>
+		<input type="hidden" name ="done" th:value ="${todo.done}"/>
+		<button type="submit"  >수정</button>
+	</form>
+
+	<div>
+	<a th:href="@{/todos}">목록으로 돌아가기</a>
+	</div>
+</div>
+</body>
+</html>

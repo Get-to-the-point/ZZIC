@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import point.zzicback.dto.request.CreateTodoRequest;
+import point.zzicback.dto.request.UpdateTodoRequest;
 import point.zzicback.model.Todo;
 import point.zzicback.service.TodoService;
 
@@ -44,6 +45,18 @@ public class TodoViewController {
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
         todoService.deleteTodo(id);
+        return "redirect:/todos";
+    }
+    @PutMapping(value = "/{id}")
+    public String update (@PathVariable Long id, @RequestParam String title , @RequestParam String description,
+                          @RequestParam boolean done){ //여기서 done은 필요없어도 되니깐 빼도 된다 그러려면 html 폼에서도 빼자
+        Todo todo = Todo.builder()
+                .id(id)
+                .title(title)
+                .description(description)
+                .done(done)
+                .build();
+        todoService.updateTodo(todo);
         return "redirect:/todos";
     }
 }

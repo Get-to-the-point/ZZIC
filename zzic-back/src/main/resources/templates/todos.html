@@ -26,11 +26,12 @@
   </form>
   <div>
     <a th:href="@{/todos/{id}(id=${todo.id})}" th:text="${todo.title}">제목</a>
-  </div>  <form method="POST" th:action="@{/delete/{id}(id=${todo.id})}">
-  <input type="hidden" name="_method" value="DELETE">
-  <button type="submit"  >삭제</button>
-</form>
+  </div>
 
+  <form method="POST" th:action="@{todos/{id}(id=${todo.id})}">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit"  >삭제</button>
+  </form>
 
   </div>
 <style>

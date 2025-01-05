@@ -55,4 +55,10 @@ public class TodoController {
         return "todos";
     }
 
+    // 수정페이지
+    @GetMapping("/{id}/update")
+    public String viewDetailTodoModifyPage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("todos", todoService.getTodoById(id));
+        return "todo_modify";
+    }
 }

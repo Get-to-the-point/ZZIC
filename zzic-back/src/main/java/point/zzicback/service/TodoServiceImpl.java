@@ -20,7 +20,6 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public Todo getTodoById(Long id) {
-        // 임시로 null 반환
         return this.todoMapper.selectByPrimaryKey(id.longValue());
     }
 
@@ -36,6 +35,15 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public void deleteTodo(Long id) {
-        // 임시로 아무 작업도 하지 않음
+        this.todoMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void updateDone(Todo todo, boolean done) {
+        todo.setDone(done);
+        int updateRows = this.todoMapper.updateDone(todo);
+        if (updateRows == 0) {
+            throw new RuntimeException("업데이트할 Todo가 없습니다.");
+        }
     }
 }

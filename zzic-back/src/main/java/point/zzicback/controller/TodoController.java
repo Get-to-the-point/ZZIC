@@ -140,29 +140,16 @@ public class TodoController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateTodo(
             @Parameter(description = "수정할 Todo의 ID")
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @Parameter(description = "수정할 Todo 정보")
             @RequestBody UpdateTodoRequest updateTodoRequest) {
 
-        // 1. id를 사용해서 기존 Todo를 가져오기
-        Todo todo = this.todoService.findTodoById(id);
-        if(todo == null) {
-            // todo가 존재하지 않으면 예외 처리
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 Todo를 찾을 수 없음");
-        }
+        Todo todo = new Todo();
+        todo.setId(id);
+        todo.setTitle(updateTodoRequest.getTitle());
+        todo.setDescription(updateTodoRequest.getDescription());
+        todo.setDone(updateTodoRequest.getDone());
 
-        // 2. updateTodoRequest에 담긴 정보로 Todo 수정
-        if(updateTodoRequest.getTitle() != null) {
-            todo.setTitle(updateTodoRequest.getTitle());
-        }
-        if(updateTodoRequest.getDescription() != null) {
-            todo.setDescription(updateTodoRequest.getDescription());
-        }
-        if(updateTodoRequest.getDone() != null) {
-            todo.setDone(updateTodoRequest.getDone());
-        }
-
-        // 3. 수정된 Todo를 서비스에 전달
         this.todoService.updateTodo(todo);
     }
 

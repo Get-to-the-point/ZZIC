@@ -1,9 +1,6 @@
 package point.zzicback.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import point.zzicback.model.Todo;
 
 import java.util.List;
@@ -18,6 +15,8 @@ public interface TodoMapper {
      * 아래는 보편적인 MyBatis Mapper 메소드들입니다.
      * 이미 기능이 구현되어 있으며, `TodoMapper.xml` 파일에 정의되어 있습니다.
      */
+
+    @Delete("DELETE FROM TODO WHERE id = #{id}")
     int deleteByPrimaryKey(Long id); // JPA의 deleteById와 같은 역할
 
     int insertSelective(Todo record); // JPA의 save와 같은 역할
@@ -28,12 +27,12 @@ public interface TodoMapper {
 
 
 
-    @Select("SELECT *" +
-            "FROM TODO" +
+    @Select("SELECT * " +
+            "FROM TODO " +
             "WHERE id = #{id}")
     Todo selectByPrimaryKey(Long id);  // JPA의 findById와 같은 역할
 
-    @Select("SELECT *" +
+    @Select("SELECT * " +
             "FROM TODO")
     List<Todo> selectAll();
 
@@ -41,11 +40,12 @@ public interface TodoMapper {
     @Update("UPDATE TODO SET done = #{done} WHERE id = #{id}")
     int updateDone(Todo todo);
 
-    @Insert("INSERT INTO TODO (title, description, done)" +
-            "VALUES (#{title}, #{description}), #{done}")
-    int insert(Todo record); // JPA의 save와 같은 역할
+    @Insert("INSERT INTO TODO (title, description, done) " +
+            "VALUES (#{title}, #{description}, #{done})")
+    int insert(Todo record);
 
 
-    @Update("UPDATE TODO SET title = #{title}, description = #{description}, done = #{done}) WHERE id = #{id}")
+    @Update("UPDATE TODO SET title = #{title}, description = #{description} WHERE id = #{id}")
     void update(Todo todo);
+
 }

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>할 일 수정</title>
+</head>
+<body>
+
+<h2>할 일 수정</h2>
+
+<form method="POST" th:action="@{/todos/{id}(id=${todo.id})}">
+  <input type="hidden" name="_method" value="PUT" />
+  <input type="text" name="title" th:value="${todo.title}" placeholder="제목" />
+  <textarea name="description" th:value="${todo.description}" placeholder="설명"></textarea>
+  <input type="checkbox" name="done" th:checked="${todo.done}" /> 완료
+  <button type="submit">수정 완료</button>
+</form>
+
+</body>
+</html>

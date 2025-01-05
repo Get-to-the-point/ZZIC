@@ -47,4 +47,9 @@ public class TodoServiceImpl implements TodoService {
     public void modityDoneById(Long id) {
         todoMapper.modifyDone(id);
     }
+
+    @Override
+    public void modifyInfo(Todo todo) {
+        todoMapper.modifyInfo(todo);
+    }
 }

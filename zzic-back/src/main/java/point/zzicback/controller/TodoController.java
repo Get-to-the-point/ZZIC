@@ -61,4 +61,17 @@ public class TodoController {
         model.addAttribute("todos", todoService.getTodoById(id));
         return "todo_modify";
     }
+
+    // 내용 수정
+    @PatchMapping("/{id}/update")
+    public String viewDetailTodoModifying(@PathVariable Long id, @RequestParam("title") String title, @RequestParam("description") String description, Model model) {
+        System.out.println("here");
+        Todo todo = new Todo();
+        todo.setId(id);
+        todo.setTitle(title);
+        todo.setDescription(description);
+        todoService.modifyInfo(todo);
+        model.addAttribute("todos", todoService.getTodoById(id));
+        return "todo_detail";
+    }
 }

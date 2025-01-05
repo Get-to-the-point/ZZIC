@@ -19,4 +19,6 @@ public interface TodoService {
     void deleteTodo(Long id);
 
     void modityDoneById(Long id);
+
+    void modifyInfo(Todo todo);
 }

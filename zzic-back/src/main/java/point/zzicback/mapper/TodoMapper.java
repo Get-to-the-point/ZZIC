@@ -47,4 +47,7 @@ public interface TodoMapper {
 
     @Update("UPDATE TODO SET done=NOT done WHERE id = #{id}")
     void modifyDone(Long id);
+
+    @Update("UPDATE TODO SET title=#{title}, description=#{description} WHERE ID = #{id}")
+    void modifyInfo(Todo todo);
 }

@@ -44,4 +44,7 @@ public interface TodoMapper {
 
     @Delete("DELETE FROM TODO WHERE id = #{id}")
     void deleteTodo(Long id);
+
+    @Update("UPDATE TODO SET done=NOT done WHERE id = #{id}")
+    void modifyDone(Long id);
 }

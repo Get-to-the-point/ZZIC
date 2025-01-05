@@ -176,6 +176,7 @@
 				<!-- 완료 버튼 -->
 				<form action="/todos" method="post" class="todo-form">
 					<input type="hidden" name="_method" value="PATCH">
+					<input type="hidden" name="hit" value="false">
 					<input th:value="${todo.id}" type="hidden" name="id">
 					<button type="submit" class="btn btn-complete">완료</button>
 				</form>
@@ -205,6 +206,7 @@
 				<!-- 완료 버튼 -->
 				<form action="/todos" method="post" class="todo-form">
 					<input type="hidden" name="_method" value="PATCH">
+					<input type="hidden" name="hit" value="false">
 					<input th:value="${todo.id}" type="hidden" name="id">
 					<button type="submit" class="btn btn-complete">미완료</button>
 				</form>

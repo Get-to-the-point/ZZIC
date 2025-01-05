@@ -36,7 +36,7 @@ public interface TodoMapper {
     @Select("SELECT * FROM TODO WHERE ID = #{id}")
     Todo selectById(Long id);
 
-    @Insert("INSERT INTO TODO(title, description) VALUES(#{title}, #{description})")
+    @Insert("INSERT INTO TODO(title, description, done) VALUES(#{title}, #{description}, TRUE)")
     void createTodo(Todo todo);
 
     @Update("UPDATE TODO SET title=#{title}, description=#{description}, done=#{done} WHERE id = #{id}")

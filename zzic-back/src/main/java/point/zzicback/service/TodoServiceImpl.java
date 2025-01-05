@@ -42,4 +42,9 @@ public class TodoServiceImpl implements TodoService {
         todoMapper.deleteTodo(id);
         // 임시로 아무 작업도 하지 않음
     }
+
+    @Override
+    public void modityDoneById(Long id) {
+        todoMapper.modifyDone(id);
+    }
 }

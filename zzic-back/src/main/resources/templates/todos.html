@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+				content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<style>
+      .flex-container ul {
+          display: flex; /* Flexbox 활성화 */
+          flex-wrap: wrap; /* 줄바꿈 활성화 */
+          justify-content: flex-start; /* 왼쪽 정렬 */
+          padding: 0; /* 기본 패딩 제거 */
+          margin: 0; /* 기본 마진 제거 */
+          list-style: none; /* 리스트 스타일 제거 */
+      }
+
+      .flex-container ul li {
+          flex: 0 0 calc(20% - 10px); /* 각 항목의 너비: 20% - 간격 */
+          text-align: center; /* 텍스트 가운데 정렬 */
+          margin: 5px; /* 항목 간격 */
+          padding: 10px; /* 내부 여백 */
+          border: 1px solid #ccc; /* 테두리 (선택사항) */
+          box-sizing: border-box; /* 테두리와 패딩 포함 */
+      }
+
+      @media (max-width: 768px) {
+          .flex-container ul li {
+              flex: 0 0 calc(33.33% - 10px); /* 작은 화면에서는 한 줄에 3개 */
+          }
+      }
+
+      @media (max-width: 480px) {
+          .flex-container ul li {
+              flex: 0 0 calc(50% - 10px); /* 더 작은 화면에서는 한 줄에 2개 */
+          }
+      }
+
+      /* 전체 폼 스타일 */
+      .todo-form {
+          max-width: 600px; /* 폼의 최대 너비 */
+          margin: 20px auto; /* 화면 중앙 정렬 */
+          display: flex;
+          flex-direction: column; /* 수직 정렬 */
+          gap: 15px; /* 항목 간격 */
+          font-family: Arial, sans-serif; /* 폰트 설정 */
+      }
+
+      /* 입력 필드와 텍스트 영역 공통 스타일 */
+      .form-control {
+          width: 100%; /* 폼의 전체 너비 */
+          padding: 10px; /* 내부 여백 */
+          font-size: 16px; /* 글자 크기 */
+          border: 1px solid #ccc; /* 테두리 */
+          border-radius: 4px; /* 둥근 모서리 */
+          box-sizing: border-box; /* 테두리와 패딩 포함 */
+      }
+
+      /* 버튼 스타일 */
+      .btn-submit {
+          padding: 10px 15px; /* 내부 여백 */
+          font-size: 16px; /* 글자 크기 */
+          background-color: #007bff; /* 버튼 배경색 */
+          color: white; /* 버튼 텍스트 색상 */
+          border: none; /* 테두리 제거 */
+          border-radius: 4px; /* 둥근 모서리 */
+          cursor: pointer; /* 마우스 커서 변경 */
+          transition: background-color 0.3s ease; /* 호버 효과 */
+      }
+
+      .btn-submit:hover {
+          background-color: #0056b3; /* 버튼 호버 색상 */
+      }
+
+      /* 전체 아이템 스타일 */
+      .todo-item {
+          display: flex; /* 가로 배치 */
+          align-items: center; /* 세로 정렬 */
+          justify-content: space-between; /* 각 요소 사이에 여백 추가 */
+          padding: 10px 15px; /* 내부 여백 */
+          border: 1px solid #ddd; /* 테두리 */
+          border-radius: 8px; /* 모서리 둥글게 */
+          margin-bottom: 10px; /* 각 항목 사이 간격 */
+          background-color: #f9f9f9; /* 배경색 */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 */
+      }
+
+      /* 폼 스타일 */
+      .todo-form {
+          margin: 0; /* 기본 여백 제거 */
+      }
+
+      /* 버튼 스타일 */
+      .btn {
+          padding: 8px 12px; /* 버튼 내부 여백 */
+          font-size: 14px; /* 버튼 글자 크기 */
+          border: none; /* 테두리 제거 */
+          border-radius: 4px; /* 모서리 둥글게 */
+          cursor: pointer; /* 마우스 커서 변경 */
+          transition: background-color 0.3s ease; /* 호버 효과 */
+      }
+
+      /* 완료 버튼 스타일 */
+      .btn-complete {
+          background-color: #4caf50; /* 초록색 배경 */
+          color: white; /* 흰색 글자 */
+      }
+
+      .btn-complete:hover {
+          background-color: #45a049; /* 호버 시 조금 더 어두운 초록색 */
+      }
+
+      /* 삭제 버튼 스타일 */
+      .btn-delete {
+          background-color: #f44336; /* 빨간색 배경 */
+          color: white; /* 흰색 글자 */
+      }
+
+      .btn-delete:hover {
+          background-color: #d32f2f; /* 호버 시 더 어두운 빨간색 */
+      }
+
+      /* 제목 링크 스타일 */
+      .todo-link {
+          flex-grow: 1; /* 링크가 나머지 공간 차지 */
+          margin: 0 10px; /* 양쪽 여백 */
+          font-size: 16px; /* 글자 크기 */
+          text-decoration: none; /* 밑줄 제거 */
+      }
+
+			.yet {
+          color: #007bff; /* 파란색 글자 */
+			}
+
+      .done {
+          color: gray; /* 회색 글자 */
+			}
+
+      .todo-link:hover {
+          text-decoration: underline; /* 호버 시 밑줄 표시 */
+      }
+
+    a {
+        color: inherit; /* 부모 요소의 색상을 상속받음 */
+        font-size: larger;
+    }
+		a:hover {
+        font-weight: bold;
+    }
+    a.strike-through {
+        text-decoration: line-through;
+    }
+	</style>
+	<title>DOTOS</title>
+</head>
+<body>
+
+<h2>하고픈 일</h2>
+<div>
+	<form action="/todos" method="post" class="todo-form">
+		<label for="title">제목</label>
+		<input type="text" id="title" name="title" class="form-control">
+		<label for="description">내용</label>
+		<textarea id="description" name="description" rows="4" cols="50" class="form-control"></textarea>
+		<button type="submit" class="btn-submit">생성</button>
+	</form>
+</div>
+
+<h2>할 일</h2>
+<div class="flex-container yet">
+	<ul>
+		<li th:each="todo:${todos}" th:if="${todo.done}">
+			<div class="todo-item" th:value="${todo.id}">
+				<!-- 완료 버튼 -->
+				<form action="/todos" method="post" class="todo-form">
+					<input type="hidden" name="_method" value="PATCH">
+					<input th:value="${todo.id}" type="hidden" name="id">
+					<button type="submit" class="btn btn-complete">완료</button>
+				</form>
+
+				<!-- 제목 링크 -->
+				<a th:href="@{/todos/{id}(id=${todo.id})}" class="todo-link" th:text="${todo.title}"></a>
+
+				<!-- 삭제 버튼 -->
+				<form action="/todos" method="post" class="todo-form">
+					<input type="hidden" name="_method" value="DELETE">
+					<input th:value="${todo.id}" type="hidden" name="id">
+					<button type="submit" class="btn btn-delete">삭제</button>
+				</form>
+			</div>
+		</li>
+	</ul>
+</div>
+
+<h2>끝난 일</h2>
+<div class="flex-container done">
+	<ul>
+		<li  th:each="todo:${todos}" th:unless="${todo.done}">
+
+			<div class="todo-item" th:value="${todo.id}">
+				<!-- 완료 버튼 -->
+				<form action="/todos" method="post" class="todo-form">
+					<input type="hidden" name="_method" value="PATCH">
+					<input th:value="${todo.id}" type="hidden" name="id">
+					<button type="submit" class="btn btn-complete">미완료</button>
+				</form>
+
+				<!-- 제목 링크 -->
+				<a th:href="@{/todos/{id}(id=${todo.id})}" class="todo-link strike-through" th:text="${todo.title}"></a>
+
+				<!-- 삭제 버튼 -->
+				<form action="/todos" method="post" class="todo-form">
+					<input type="hidden" name="_method" value="DELETE">
+					<input th:value="${todo.id}" type="hidden" name="id">
+					<button type="submit" class="btn btn-delete">삭제</button>
+				</form>
+			</div>
+		</li>
+	</ul>
+</div>
+
+</body>
+</html>

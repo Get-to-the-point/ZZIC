@@ -48,6 +48,10 @@
           color: #f44336;
       }
 
+      .todo-status.done {
+          color: #4caf50;
+      }
+
       .todo-actions {
           display: flex;
           gap: 10px;
@@ -61,7 +65,6 @@
       .todo-actions button {
           padding: 10px 15px;
           font-size: 14px;
-          background-color: #007bff;
           color: #ffffff;
           border: none;
           border-radius: 4px;
@@ -69,8 +72,20 @@
           transition: background-color 0.3s ease;
       }
 
-      .todo-actions button:hover {
+      .todo-actions .btn-modify {
+          background-color: #007bff;
+      }
+
+      .todo-actions .btn-modify:hover {
           background-color: #0056b3;
+      }
+
+      .todo-actions .btn-complete {
+          background-color: #4caf50;
+      }
+
+      .todo-actions .btn-complete:hover {
+          background-color: #4caf50;
       }
 
       .todo-actions button.secondary {
@@ -80,6 +95,7 @@
       .todo-actions button.secondary:hover {
           background-color: #7e7e7e;
       }
+
 	</style>
 	<title>TODO DETAIL</title>
 </head>
@@ -100,16 +116,23 @@
 	<!-- 상태 -->
 	<div class="todo-item">
 		<h1>상태</h1>
-		<div class="todo-status" th:classappend="${!todos.done} ? 'pending' : ''">
-			<span th:if="${todos.done}">완료</span>
-			<span th:unless="${todos.done}">미완료</span>
+		<div class="todo-status" th:classappend="${!todos.done} ? 'done' : 'pending'">
+			<span th:if="${!todos.done}">완료</span>
+			<span th:unless="${!todos.done}">미완료</span>
 		</div>
 	</div>
 
 	<!-- 액션 버튼 -->
 	<div class="todo-actions">
+		<form action="/todos" method="post" class="todo-form">
+			<input type="hidden" name="_method" value="PATCH">
+			<input type="hidden" name="hit" value="true">
+			<input th:value="${todos.id}" type="hidden" name="id">
+			<button th:if="${todos.done}" type="submit" class="btn btn-complete">완료</button>
+			<button th:unless="${todos.done}" type="submit" class="btn btn-complete">미완료</button>
+		</form>
 		<form th:action="@{/todos/{id}/update(id=${todos.id})}">
-			<button type="submit">수정</button>
+			<button class="btn btn-modify" type="submit">수정</button>
 		</form>
 		<form action="/todos">
 			<button type="submit" class="secondary">목록으로</button>

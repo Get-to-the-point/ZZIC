@@ -41,8 +41,12 @@ public class TodoController {
 
     // TODO 수정
     @PatchMapping
-    public String modifyDone(Model model, @RequestParam("id") Long id) {
+    public String modifyDone(Model model, @RequestParam("id") Long id, @RequestParam("hit") Boolean hit) {
         todoService.modityDoneById(id);
+        if (hit) {
+            model.addAttribute("todos", todoService.getTodoById(id));
+            return "todo_detail";
+        }
         model.addAttribute("todos", todoService.getTodoList());
         return "todos";
     }

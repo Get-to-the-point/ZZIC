@@ -1,23 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>Title</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>할 일 수정</title>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+	<style>
+      /* 이전 스타일과 동일하게 유지 */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Noto Sans KR', sans-serif;
+      }
+
+      body {
+          background-color: #f4f4f4; /* 밝은 회색 배경 */
+          color: #2d3748;
+          line-height: 1.6;
+          padding: 2rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+      }
+
+      .container {
+          max-width: 800px;
+          background: white;
+          border-radius: 16px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          padding: 2rem;
+      }
+
+      .header {
+          background: linear-gradient(135deg, #e9d8fd, #800080); /* 보라색 그라데이션 */
+          color: white;
+          padding: 2rem;
+          border-radius: 12px 12px 0 0;
+          margin-bottom: 2rem;
+          text-align: center;
+      }
+
+      .header h1 {
+          font-size: 2.5rem;
+          margin-bottom: 0.5rem;
+      }
+
+      .update-form {
+          background: #f8f9fa; /* 밝은 회색 배경 */
+          padding: 1.5rem;
+          border-radius: 12px;
+          margin-bottom: 2rem;
+      }
+
+      .input-group {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin-bottom: 1rem;
+      }
+
+      label {
+          font-weight: 500;
+          color: #4a5568;
+      }
+
+      input[type="text"] {
+          padding: 0.75rem;
+          border: 2px solid #e2e8f0;
+          border-radius: 8px;
+          font-size: 1rem;
+          transition: border-color 0.2s;
+      }
+
+      input[type="text"]:focus {
+          outline: none;
+          border-color: #800080; /* 보라색 */
+      }
+
+      .btn {
+          padding: 0.75rem 1.5rem;
+          border: none;
+          border-radius: 8px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: transform 0.1s, background-color 0.2s;
+      }
+
+      .btn:active {
+          transform: scale(0.98);
+      }
+
+      .btn-primary {
+          background-color: #800080; /* 보라색 */
+          color: white;
+      }
+
+      .btn-primary:hover {
+          background-color: #4B0082; /* 진한 보라색 */
+      }
+
+      .btn-secondary {
+          background-color: #e2e8f0; /* 밝은 회색 */
+          color: #4a5568;
+      }
+
+      .btn-secondary:hover {
+          background-color: #cbd5e0; /* 조금 더 진한 회색 */
+      }
+	</style>
 </head>
 <body>
-<div>
+<div class="container">
+	<div class="header">
+		<h1>할 일 수정</h1>
+	</div>
 
-	<form
-		method="POST" th:action="@{/todos/{id}(id=${todo.id})}">
-		<input type="hidden" name="_method" value="PUT">
-		<input type="text" name="title" placeholder="제목" th:value="${todo.title}"/>
-		<input name="description" placeholder="설명" th:value="${todo.description}"/>
-		<input type="hidden" name ="done" th:value ="${todo.done}"/>
-		<button type="submit"  >수정</button>
-	</form>
-
-	<div>
-	<a th:href="@{/todos}">목록으로 돌아가기</a>
+	<div class="update-form">
+		<form method="POST" th:action="@{/todos/{id}(id=${todo.id})}">
+			<input type="hidden" name="_method" value="PUT">
+			<div class="input-group">
+				<input type="text" name="title" placeholder="제목" th:value="${todo.title}" required th:autocomplete="off">
+			</div>
+			<div class="input-group">
+				<input type="text" name="description" placeholder="설명" th:value="${todo.description}" th:autocomplete="off">
+			</div>
+			<input type="hidden" name ="done" th:value ="${todo.done}"/>
+			<div class="btn-group">
+				<button type="submit" class="btn btn-primary">수정 완료</button>
+				<a th:href="@{/todos/{id}(id=${todo.id})}" class="btn btn-secondary">취소</a>
+			</div>
+		</form>
 	</div>
 </div>
 </body>

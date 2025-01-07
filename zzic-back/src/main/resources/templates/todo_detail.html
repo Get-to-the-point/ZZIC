@@ -6,21 +6,27 @@
 				content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<style>
-      /* 전체 컨테이너 스타일 */
       body {
           font-family: Arial, sans-serif;
-          background-color: #f4f4f9;
+          background: linear-gradient(0.25turn, #b6fbff 0%, #83a4d4 100%);
           margin: 0;
           padding: 20px;
+          color: #333;
+      }
+
+      h1, h2 {
+          text-align: center;
+          color: #007bff;
       }
 
       .todo-container {
-          max-width: 600px;
+          max-width: 300px;
           margin: 0 auto;
           background-color: #ffffff;
           border-radius: 8px;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
           padding: 20px;
+          text-align: center; /* 전체 텍스트와 버튼 중앙 정렬 */
       }
 
       .todo-item {
@@ -29,18 +35,24 @@
 
       .todo-item h1 {
           font-size: 20px;
-          color: #333;
+          color: #007bff;
           margin-bottom: 5px;
       }
 
       .todo-item div {
           font-size: 16px;
           color: #555;
+          word-break: break-word; /* 긴 단어를 줄바꿈 */
+          overflow-wrap: break-word; /* 추가적인 줄바꿈 지원 */
+          text-align: center; /* 중앙 정렬 유지 */
       }
 
       .todo-status {
           font-size: 16px;
           font-weight: bold;
+      }
+
+      .todo-status.done {
           color: #4caf50;
       }
 
@@ -48,18 +60,11 @@
           color: #f44336;
       }
 
-      .todo-status.done {
-          color: #4caf50;
-      }
-
       .todo-actions {
           display: flex;
-          gap: 10px;
+          justify-content: center; /* 버튼 중앙 정렬 */
+          gap: 40px;
           margin-top: 20px;
-      }
-
-      .todo-actions form {
-          margin: 0;
       }
 
       .todo-actions button {
@@ -72,53 +77,54 @@
           transition: background-color 0.3s ease;
       }
 
-      .todo-actions .btn-modify {
+      .btn-modify {
           background-color: #007bff;
       }
 
-      .todo-actions .btn-modify:hover {
+      .btn-modify:hover {
           background-color: #0056b3;
       }
 
-      .todo-actions .btn-complete {
+      .btn-complete {
           background-color: #4caf50;
       }
 
-      .todo-actions .btn-complete:hover {
-          background-color: #4caf50;
+      .btn-complete:hover {
+          background-color: #388e3c;
       }
 
-      .todo-actions button.secondary {
+      .btn-back {
           background-color: #9e9e9e;
       }
 
-      .todo-actions button.secondary:hover {
+      .btn-back:hover {
           background-color: #7e7e7e;
       }
-
 	</style>
 	<title>TODO DETAIL</title>
 </head>
 <body>
 <div class="todo-container">
+	<h1>TODO LIST</h1>
+
 	<!-- 제목 -->
 	<div class="todo-item">
-		<h1>제목</h1>
+		<h1>TITLE</h1>
 		<div th:text="${todos.title}"></div>
 	</div>
 
 	<!-- 내용 -->
 	<div class="todo-item">
-		<h1>내용</h1>
+		<h1>CONTENT</h1>
 		<div th:text="${todos.description}"></div>
 	</div>
 
 	<!-- 상태 -->
 	<div class="todo-item">
-		<h1>상태</h1>
+		<h1>STATUS</h1>
 		<div class="todo-status" th:classappend="${!todos.done} ? 'done' : 'pending'">
-			<span th:if="${!todos.done}">완료</span>
-			<span th:unless="${!todos.done}">미완료</span>
+			<span th:if="${!todos.done}">Done</span>
+			<span th:unless="${!todos.done}">Undone</span>
 		</div>
 	</div>
 
@@ -128,14 +134,14 @@
 			<input type="hidden" name="_method" value="PATCH">
 			<input type="hidden" name="hit" value="true">
 			<input th:value="${todos.id}" type="hidden" name="id">
-			<button th:if="${todos.done}" type="submit" class="btn btn-complete">완료</button>
-			<button th:unless="${todos.done}" type="submit" class="btn btn-complete">미완료</button>
+			<button th:if="${todos.done}" type="submit" class="btn btn-complete">Done</button>
+			<button th:unless="${todos.done}" type="submit" class="btn btn-complete">Undone</button>
 		</form>
 		<form th:action="@{/todos/{id}/update(id=${todos.id})}">
-			<button class="btn btn-modify" type="submit">수정</button>
+			<button class="btn btn-modify" type="submit">Modify</button>
 		</form>
 		<form action="/todos">
-			<button type="submit" class="secondary">목록으로</button>
+			<button type="submit" class="secondary btn-back">To list</button>
 		</form>
 	</div>
 </div>

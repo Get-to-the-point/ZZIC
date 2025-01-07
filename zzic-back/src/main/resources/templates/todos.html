@@ -1,232 +1,234 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport"
-				content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Todos</title>
 	<style>
-      .flex-container ul {
-          display: flex; /* Flexbox 활성화 */
-          flex-wrap: wrap; /* 줄바꿈 활성화 */
-          justify-content: flex-start; /* 왼쪽 정렬 */
-          padding: 0; /* 기본 패딩 제거 */
-          margin: 0; /* 기본 마진 제거 */
-          list-style: none; /* 리스트 스타일 제거 */
+      body {
+          font-family: Arial, sans-serif;
+          background: linear-gradient(0.25turn, #b6fbff 0%, #83a4d4 100%);
+          margin: 0;
+          padding: 0;
+          color: #333;
       }
 
-      .flex-container ul li {
-          flex: 0 0 calc(20% - 10px); /* 각 항목의 너비: 20% - 간격 */
-          text-align: center; /* 텍스트 가운데 정렬 */
-          margin: 5px; /* 항목 간격 */
-          padding: 10px; /* 내부 여백 */
-          border: 1px solid #ccc; /* 테두리 (선택사항) */
-          box-sizing: border-box; /* 테두리와 패딩 포함 */
+      .container {
+          width: 90%;
+          max-width: 500px;
+          margin: 20px auto;
+          background: #fff;
+          border-radius: 12px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          padding: 20px;
       }
 
-      @media (max-width: 768px) {
-          .flex-container ul li {
-              flex: 0 0 calc(33.33% - 10px); /* 작은 화면에서는 한 줄에 3개 */
-          }
+      h1, h2 {
+          text-align: center;
+          color: #007bff;
       }
 
-      @media (max-width: 480px) {
-          .flex-container ul li {
-              flex: 0 0 calc(50% - 10px); /* 더 작은 화면에서는 한 줄에 2개 */
-          }
+      .todo-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+          margin-top: 20px;
       }
 
-      /* 전체 폼 스타일 */
-      .todo-form {
-          max-width: 600px; /* 폼의 최대 너비 */
-          margin: 20px auto; /* 화면 중앙 정렬 */
-          display: flex;
-          flex-direction: column; /* 수직 정렬 */
-          gap: 15px; /* 항목 간격 */
-          font-family: Arial, sans-serif; /* 폰트 설정 */
-      }
-
-      /* 입력 필드와 텍스트 영역 공통 스타일 */
-      .form-control {
-          width: 100%; /* 폼의 전체 너비 */
-          padding: 10px; /* 내부 여백 */
-          font-size: 16px; /* 글자 크기 */
-          border: 1px solid #ccc; /* 테두리 */
-          border-radius: 4px; /* 둥근 모서리 */
-          box-sizing: border-box; /* 테두리와 패딩 포함 */
-      }
-
-      /* 버튼 스타일 */
-      .btn-submit {
-          padding: 10px 15px; /* 내부 여백 */
-          font-size: 16px; /* 글자 크기 */
-          background-color: #007bff; /* 버튼 배경색 */
-          color: white; /* 버튼 텍스트 색상 */
-          border: none; /* 테두리 제거 */
-          border-radius: 4px; /* 둥근 모서리 */
-          cursor: pointer; /* 마우스 커서 변경 */
-          transition: background-color 0.3s ease; /* 호버 효과 */
-      }
-
-      .btn-submit:hover {
-          background-color: #0056b3; /* 버튼 호버 색상 */
-      }
-
-      /* 전체 아이템 스타일 */
       .todo-item {
-          display: flex; /* 가로 배치 */
-          align-items: center; /* 세로 정렬 */
-          justify-content: space-between; /* 각 요소 사이에 여백 추가 */
-          padding: 10px 15px; /* 내부 여백 */
-          border: 1px solid #ddd; /* 테두리 */
-          border-radius: 8px; /* 모서리 둥글게 */
-          margin-bottom: 10px; /* 각 항목 사이 간격 */
-          background-color: #f9f9f9; /* 배경색 */
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 */
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          background: #f4f4f4;
+          padding: 10px;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
-      /* 폼 스타일 */
-      .todo-form {
-          margin: 0; /* 기본 여백 제거 */
+      .todo-item {
+          font-size: 16px;
+          color: #555;
+          white-space: nowrap; /* 줄바꿈 방지 */
+          overflow: hidden; /* 넘치는 텍스트 숨김 */
+          text-overflow: ellipsis; /* ...으로 표시 */
+          text-align: left; /* 텍스트 왼쪽 정렬 (필요 시 변경 가능) */
       }
 
-      /* 버튼 스타일 */
-      .btn {
-          padding: 8px 12px; /* 버튼 내부 여백 */
-          font-size: 14px; /* 버튼 글자 크기 */
-          border: none; /* 테두리 제거 */
-          border-radius: 4px; /* 모서리 둥글게 */
-          cursor: pointer; /* 마우스 커서 변경 */
-          transition: background-color 0.3s ease; /* 호버 효과 */
+      .todo-item a {
+          font-size: 16px;
+          color: #007bff;
+          text-decoration: none;
+          white-space: nowrap; /* 줄바꿈 방지 */
+          overflow: hidden; /* 넘치는 텍스트 숨김 */
+          text-overflow: ellipsis; /* ...으로 표시 */
+          display: inline-block; /* 요소를 블록처럼 취급하여 너비 설정 가능 */
+          width: 100%; /* 너비를 설정하여 ellipsis가 적용되도록 설정 */
+          text-align: center; /* 텍스트 왼쪽 정렬 (필요 시 조정 가능) */
       }
 
-      /* 완료 버튼 스타일 */
+      .todo-item.done {
+          text-decoration: line-through;
+          color: gray;
+      }
+
+      .todo-buttons {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-top: 10px;
+      }
+
+      .todo-buttons button {
+          flex: 1;
+          margin: 0 5px;
+          padding: 10px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+      }
+
       .btn-complete {
-          background-color: #4caf50; /* 초록색 배경 */
-          color: white; /* 흰색 글자 */
+          background: #4caf50;
+          color: #fff;
       }
 
       .btn-complete:hover {
-          background-color: #45a049; /* 호버 시 조금 더 어두운 초록색 */
+          background: #45a049;
       }
 
-      /* 삭제 버튼 스타일 */
       .btn-delete {
-          background-color: #f44336; /* 빨간색 배경 */
-          color: white; /* 흰색 글자 */
+          background: #f44336;
+          color: #fff;
       }
 
       .btn-delete:hover {
-          background-color: #d32f2f; /* 호버 시 더 어두운 빨간색 */
+          background: #d32f2f;
       }
 
-      /* 제목 링크 스타일 */
-      .todo-link {
-          flex-grow: 1; /* 링크가 나머지 공간 차지 */
-          margin: 0 10px; /* 양쪽 여백 */
-          font-size: 16px; /* 글자 크기 */
-          text-decoration: none; /* 밑줄 제거 */
+      a {
+          color: #007bff;
+          font-size: 16px;
+          text-decoration: none;
+          transition: color 0.3s, text-shadow 0.3s;
       }
 
-			.yet {
-          color: #007bff; /* 파란색 글자 */
-			}
-
-      .done {
-          color: gray; /* 회색 글자 */
-			}
-
-      .todo-link:hover {
-          text-decoration: underline; /* 호버 시 밑줄 표시 */
+      a:hover {
+          color: #0056b3;
+          text-shadow: 0 0 4px #0056b3;
       }
 
-    a {
-        color: inherit; /* 부모 요소의 색상을 상속받음 */
-        font-size: larger;
-    }
-		a:hover {
-        font-weight: bold;
-    }
-    a.strike-through {
-        text-decoration: line-through;
-    }
+      .form-container {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          margin-top: 20px;
+      }
+
+      .form-container input,
+      .form-container textarea {
+          width: 100%;
+          padding: 10px;
+          font-size: 16px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+          margin: 5px 0;
+      }
+
+      .form-container button {
+          width: 100%;
+          padding: 10px;
+          font-size: 16px;
+          color: #fff;
+          background: #007bff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+      }
+
+      .form-container button:hover {
+          background: #0056b3;
+      }
+
+      .empty-message {
+          text-align: center;
+          color: #999;
+          font-size: 16px;
+          margin: 25px;
+      }
 	</style>
-	<title>DOTOS</title>
+	<script>
+		function validateForm() {
+			const title = document.querySelector('input[name="title"]').value.trim();
+			if (title === '') {
+				alert('제목을 입력주세요.');
+				return false;
+			}
+			return true;
+		}
+	</script>
 </head>
+
 <body>
+<div class="container">
+	<h1>TODO LIST</h1>
 
-<h2>하고픈 일</h2>
-<div>
-	<form action="/todos" method="post" class="todo-form">
-		<label for="title">제목</label>
-		<input type="text" id="title" name="title" class="form-control">
-		<label for="description">내용</label>
-		<textarea id="description" name="description" rows="4" cols="50" class="form-control"></textarea>
-		<button type="submit" class="btn-submit" onclick="return confirm('생성하시겠습니까?');">
-			생성
-		</button>
-	</form>
-</div>
+	<div class="form-container">
+		<form action="/todos" method="POST" onsubmit="return validateForm()">
+			<input type="text" name="title" placeholder="Please enter the title">
+			<textarea name="description" rows="3" placeholder="Please enter the content"></textarea>
+			<input type="hidden" name="hit" value="true">
+			<button type="submit">Create a note</button>
+		</form>
+	</div>
 
-<h2>할 일</h2>
-<div class="flex-container yet">
-	<ul>
-		<li th:each="todo:${todos}" th:if="${todo.done}">
-			<div class="todo-item" th:value="${todo.id}">
-				<!-- 완료 버튼 -->
-				<form action="/todos" method="post" class="todo-form">
+	<p class="empty-message" th:if="${#lists.isEmpty(todos)}">No items available</p>
+
+	<h2>In progress</h2>
+	<div class="todo-grid">
+		<div class="todo-item" th:each="todo : ${todos}" th:if="${todo.done}">
+			<a th:href="@{/todos/{id}(id=${todo.id})}" th:text="${todo.title}">TITLE</a>
+			<div class="todo-buttons">
+				<form action="/todos" method="post">
 					<input type="hidden" name="_method" value="PATCH">
 					<input type="hidden" name="hit" value="false">
 					<input th:value="${todo.id}" type="hidden" name="id">
-					<button type="submit" class="btn btn-complete">완료</button>
+					<button class="btn-complete">Done</button>
 				</form>
-
-				<!-- 제목 링크 -->
-				<a th:href="@{/todos/{id}(id=${todo.id})}" class="todo-link" th:text="${todo.title}"></a>
-
-				<!-- 삭제 버튼 -->
-				<form action="/todos" method="post" class="todo-form">
+				<form action="/todos" method="post">
 					<input type="hidden" name="_method" value="DELETE">
 					<input th:value="${todo.id}" type="hidden" name="id">
-					<button type="submit" class="btn btn-delete" onclick="return confirm('정말 삭제하시겠습니까?');">
-						삭제
-					</button>
+					<button class="btn-delete">Delete</button>
 				</form>
 			</div>
-		</li>
-	</ul>
-</div>
+		</div>
+	</div>
 
-<h2>끝난 일</h2>
-<div class="flex-container done">
-	<ul>
-		<li  th:each="todo:${todos}" th:unless="${todo.done}">
-
-			<div class="todo-item" th:value="${todo.id}">
-				<!-- 완료 버튼 -->
-				<form action="/todos" method="post" class="todo-form">
+	<h2>Completed</h2>
+	<div class="todo-grid">
+		<div class="todo-item done" th:each="todo : ${todos}" th:unless="${todo.done}">
+			<a th:href="@{/todos/{id}(id=${todo.id})}" th:text="${todo.title}">완료된 제목</a>
+			<div class="todo-buttons">
+				<form action="/todos" method="post">
 					<input type="hidden" name="_method" value="PATCH">
 					<input type="hidden" name="hit" value="false">
 					<input th:value="${todo.id}" type="hidden" name="id">
-					<button type="submit" class="btn btn-complete">미완료</button>
+					<button class="btn-complete">Undone</button>
 				</form>
-
-				<!-- 제목 링크 -->
-				<a th:href="@{/todos/{id}(id=${todo.id})}" class="todo-link strike-through" th:text="${todo.title}"></a>
-
-				<!-- 삭제 버튼 -->
-				<form action="/todos" method="post" class="todo-form">
+				<form action="/todos" method="post">
 					<input type="hidden" name="_method" value="DELETE">
 					<input th:value="${todo.id}" type="hidden" name="id">
-					<!-- 삭제 버튼에 confirm 추가 -->
-					<button type="submit" class="btn btn-delete" onclick="return confirm('정말 삭제하시겠습니까?');">
-						삭제
-					</button>
+					<button class="btn-delete">Delete</button>
 				</form>
 			</div>
-		</li>
-	</ul>
+		</div>
+	</div>
 </div>
-
 </body>
+
 </html>

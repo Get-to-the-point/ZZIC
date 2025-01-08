@@ -32,9 +32,15 @@
 
       .todo-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(3, 1fr); /* 기본 설정: 3열 */
           gap: 10px;
           margin-top: 20px;
+      }
+
+      @media (max-width: 768px) {
+          .todo-grid {
+              grid-template-columns: 1fr; /* 모바일 화면에서는 1열 */
+          }
       }
 
       .todo-item {
@@ -69,9 +75,9 @@
           text-align: center; /* 텍스트 왼쪽 정렬 (필요 시 조정 가능) */
       }
 
-      .todo-item.done {
+      .todo-item.done a {
           text-decoration: line-through;
-          color: gray;
+          color: #494949;
       }
 
       .todo-buttons {
@@ -114,6 +120,11 @@
           font-size: 16px;
           text-decoration: none;
           transition: color 0.3s, text-shadow 0.3s;
+      }
+
+      .done a:hover {
+          color: #000000;
+          text-shadow: 0 0 4px #000000;
       }
 
       a:hover {

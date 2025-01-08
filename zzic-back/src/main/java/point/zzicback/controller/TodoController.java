@@ -36,7 +36,7 @@ public class TodoController {
         todo.setDescription(description);
         todoService.createTodo(todo);
         model.addAttribute("todos", todoService.getTodoList());
-        return "todos";
+        return "redirect:/todos"; // PRG 패턴 적용: 리다이렉트
     }
 
     // TODO 수정
@@ -45,10 +45,10 @@ public class TodoController {
         todoService.modityDoneById(id);
         if (hit) {
             model.addAttribute("todos", todoService.getTodoById(id));
-            return "todo_detail";
+            return "redirect:/todos/"+id;
         }
         model.addAttribute("todos", todoService.getTodoList());
-        return "todos";
+        return "redirect:/todos"; // PRG 패턴 적용: 리다이렉트
     }
 
     // TODO 삭제
@@ -56,7 +56,7 @@ public class TodoController {
     public String deleteTodo(Model model, @RequestParam("id") Long id) {
         todoService.deleteTodo(id);
         model.addAttribute("todos", todoService.getTodoList());
-        return "todos";
+        return "redirect:/todos"; // PRG 패턴 적용: 리다이렉트
     }
 
     // 수정페이지
@@ -76,6 +76,6 @@ public class TodoController {
         todo.setDescription(description);
         todoService.modifyInfo(todo);
         model.addAttribute("todos", todoService.getTodoById(id));
-        return "todo_detail";
+        return "redirect:/todos/"+id;
     }
 }

@@ -5,15 +5,15 @@
 	<title>TO DO LIST</title>
 	<style>
       :root {
-          --pastel-pink: #FFD6E0;  /* 메인 색상을 따뜻한 핑크로 변경 */
-          --pastel-lavender: #E8D5F9;  /* 보조 색상 */
-          --pastel-mint: #C3E8E2;  /* 민트색 약간 더 부드럽게 */
-          --pastel-peach: #FFE2D1;  /* 피치색 더 부드럽게 */
-          --pastel-yellow: #FFF3D6;  /* 새로운 파스텔 옐로우 추가 */
-					--pastel-green: #D1F2C9;  /* 새로운 파스텔 그린 추가 */
-					--pastel-sky: #cdfaec;  /* 새로운 파스텔 하늘 추가 */
-          --grid-color: #EAEAEA;  /* 그리드 라인 더 연하게 */
-          --text-color: #7A7A7A;  /* 텍스트 색상 더 부드럽게 */
+          --pastel-pink: #FFD6E0;
+          --pastel-lavender: #E8D5F9;
+          --pastel-mint: #C3E8E2;
+          --pastel-peach: #FFE2D1;
+          --pastel-yellow: #FFF3D6;
+          --pastel-green: #D1F2C9;
+          --pastel-sky: #cdfaec;
+          --grid-color: #EAEAEA;
+          --text-color: #7A7A7A;
       }
 
       body {
@@ -27,6 +27,35 @@
                   linear-gradient(var(--grid-color) 1px, transparent 1px),
                   linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
           background-size: 20px 20px;
+          position: relative;
+          overflow-x: hidden;
+      }
+
+      /* Fixed stars */
+      .fixed-star {
+          position: fixed;
+          color: #FFD700;
+          font-size: 1.2rem;
+          z-index: 1000;
+      }
+
+      .fixed-star:nth-child(1) { top: 10%; left: 5%; }
+      .fixed-star:nth-child(2) { top: 20%; right: 10%; }
+      .fixed-star:nth-child(3) { bottom: 15%; left: 15%; }
+      .fixed-star:nth-child(4) { bottom: 25%; right: 5%; }
+
+      .fixed-star:nth-child(5) { top: 30%; left: 10%; }
+      .fixed-star:nth-child(6) { top: 40%; right: 15%; }
+      .fixed-star:nth-child(7) { bottom: 35%; left: 5%; }
+      .fixed-star:nth-child(8) { bottom: 45%; right: 10%; }
+
+      /* Background stars */
+      .bg-star {
+          position: absolute;
+          color: #FFD700;
+          opacity: 0.3;
+          font-size: 1rem;
+          z-index: -1;
       }
 
       header {
@@ -115,11 +144,11 @@
       }
 
       li:nth-child(6n+1) { background-color: var(--pastel-pink); }
-      li:nth-child(6n+5) { background-color: var(--pastel-yellow); }
-      li:nth-child(6n+6) { background-color: var(--pastel-green); }
+      li:nth-child(6n+2) { background-color: var(--pastel-yellow); }
+      li:nth-child(6n+3) { background-color: var(--pastel-green); }
       li:nth-child(6n+4) { background-color: var(--pastel-peach); }
-      li:nth-child(6n+2) { background-color: var(--pastel-sky); }
-      li:nth-child(6n+3) { background-color: var(--pastel-mint); }
+      li:nth-child(6n+5) { background-color: var(--pastel-sky); }
+      li:nth-child(6n+6) { background-color: var(--pastel-mint); }
 
       a {
           color: var(--text-color);
@@ -155,6 +184,18 @@
 	</style>
 
 	<script>
+		function createBackgroundStars() {
+			const body = document.body;
+			for (let i = 0; i < 20; i++) {
+				const star = document.createElement('span');
+				star.textContent = '⭐';
+				star.classList.add('bg-star');
+				star.style.left = `${Math.random() * 100}%`;
+				star.style.top = `${Math.random() * 100}%`;
+				body.appendChild(star);
+			}
+		}
+
 		function toggleTodo(id) {
 			fetch('/todos/toggle', {
 				method: 'POST',
@@ -198,9 +239,11 @@
 					}
 				});
 			});
+			createBackgroundStars();
 		});
 	</script>
 </head>
+
 <body>
 <header>
 	<span class="star">⭐</span>
@@ -209,6 +252,15 @@
 	<span class="heart">♥</span>
 	<span class="heart">♥</span>
 </header>
+
+	<span class="fixed-star">⭐</span>
+	<span class="fixed-star">⭐</span>
+	<span class="fixed-star">⭐</span>
+	<span class="fixed-star">⭐</span>
+	<span class="fixed-star">⭐</span>
+	<span class="fixed-star">⭐</span>
+	<span class="fixed-star">⭐</span>
+	<span class="fixed-star">⭐</span>
 
 <div class="todo-container">
 	<form method="POST" th:action="@{/todos}" enctype="application/x-www-form-urlencoded">

@@ -5,89 +5,98 @@
 	<title th:text="'Todo Detail - ' + ${todo.title}">Todo Detail</title>
 	<style>
       :root {
-          --primary-yellow: #FFD93D;
-          --secondary-yellow: #FFF4BD;
-          --accent-pink: #FFB6B6;
-          --brown: #4A3F35;
+          --pastel-pink: #FFD6E0;
+          --pastel-lavender: #E8D5F9;
+          --pastel-mint: #C3E8E2;
+          --pastel-peach: #FFE2D1;
+          --pastel-yellow: #FFF3D6;
+          --pastel-green: #D1F2C9;
+          --pastel-sky: #cdfaec;
+          --grid-color: #EAEAEA;
+          --text-color: #7A7A7A;
       }
 
       body {
           font-family: "Comic Sans MS", cursive;
-          background-color: var(--secondary-yellow);
-          color: var(--brown);
+          color: var(--text-color);
           max-width: 800px;
           margin: 0 auto;
           padding: 2rem;
-      }
-
-      header h1 {
-          color: var(--brown);
-          text-align: center;
-          font-size: 3rem;
-          margin-bottom: 2rem;
-          text-shadow: 2px 2px 0 var(--accent-pink);
-      }
-
-      .choonsik-header {
-          width: 150px;
-          height: 150px;
-          margin: -75px auto 0;
+          background-color: white;
+          background-image:
+                  linear-gradient(var(--grid-color) 1px, transparent 1px),
+                  linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+          background-size: 20px 20px;
           position: relative;
-          z-index: 2;
+          overflow-x: hidden;
       }
 
-      .choonsik-header img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-          border: 4px solid var(--primary-yellow);
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      header {
+          text-align: center;
+          margin-bottom: 2rem;
+          position: relative;
+      }
+
+      h1 {
+          display: inline-block;
+          background-color: var(--pastel-pink);
+          padding: 0.5rem 2rem;
+          border-radius: 15px;
+          font-size: 2rem;
+          position: relative;
       }
 
       .detail-container {
-          background-color: white;
-          border-radius: 20px;
           padding: 2rem;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          margin-top: 50px;
-          position: relative;
-          z-index: 2;
+          margin-top: 2rem;
       }
 
       .ticket-header {
-          background: white;
-          padding: 2rem;
-          border-radius: 15px;
+          margin: 2rem 0;
+          padding: 1.5rem 1rem 1rem;
+          border-radius: 10px;
           position: relative;
-          border: 2px solid var(--primary-yellow);
-          margin-bottom: 2rem;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          background-color: var(--pastel-yellow);
+          border: 1px solid #e0e0e0;
       }
 
+      /* Spiral binding design */
       .ticket-header::before {
-          content: "";
+          content: '';
+          position: absolute;
+          top: -10px;
+          left: 0;
+          right: 0;
+          height: 20px;
+          background-image:
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px),
+                  radial-gradient(circle at center, #333 2px, transparent 2px);
+          background-size: 10% 100%;
+          background-position: 0% center, 10% center, 20% center, 30% center, 40% center,
+          50% center, 60% center, 70% center, 80% center, 90% center;
+          background-repeat: no-repeat;
+      }
+
+      /* Paper texture */
+      .ticket-header::after {
+          content: '';
           position: absolute;
           top: 0;
-          left: 20px;
-          right: 20px;
-          height: 10px;
-          background-color: var(--primary-yellow);
-          border-radius: 0 0 10px 10px;
-      }
-
-      .ticket-header::after {
-          content: "✈️";
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          font-size: 1.5em;
-      }
-
-      .ticket-header h2 {
-          color: var(--brown);
-          font-size: 2rem;
-          margin: 1rem 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: url('data:image/png;base64,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');
+          opacity: 0.1;
+          pointer-events: none;
+          z-index: -1;
       }
 
       .ticket-content {
@@ -98,8 +107,8 @@
       .status {
           display: inline-block;
           padding: 0.5rem 1rem;
-          border-radius: 20px;
-          background-color: var(--secondary-yellow);
+          border-radius: 10px;
+          background-color: var(--pastel-lavender);
           font-weight: bold;
           margin: 1rem 0;
       }
@@ -112,50 +121,31 @@
       }
 
       button, .button {
-          background-color: var(--primary-yellow);
+          background-color: var(--pastel-lavender);
           border: none;
-          border-radius: 15px;
+          border-radius: 10px;
           padding: 0.8rem 1.5rem;
           font-size: 1rem;
           cursor: pointer;
-          transition: transform 0.2s;
+          transition: all 0.3s ease;
           font-family: inherit;
-          color: var(--brown);
+          color: var(--text-color);
           text-decoration: none;
-          display: inline-block;
       }
 
       button:hover, .button:hover {
           transform: scale(1.05);
-          background-color: var(--accent-pink);
+          background-color: var(--pastel-pink);
       }
 
-      /* Plaid Background Pattern */
-      body {
-          font-family: "Comic Sans MS", cursive;
-          color: var(--brown);
-          max-width: 800px;
-          margin: 0 auto;
-          padding: 2rem;
-          background-color: var(--plaid-bg);
-          background-image:
-                  linear-gradient(var(--plaid-line) 2px, transparent 2px),
-                  linear-gradient(90deg, var(--plaid-line) 2px, transparent 2px),
-                  linear-gradient(var(--plaid-line) 1px, transparent 1px),
-                  linear-gradient(90deg, var(--plaid-line) 1px, transparent 1px);
-          background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-          background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+      h2 {
+          color: var(--text-color);
+          font-size: 1.5rem;
+          margin: 0 0 1rem;
       }
-
 	</style>
 </head>
 <body>
-
-
-<div class="choonsik-header">
-	<img src="스크린샷 2025-01-06 오전 8.04.44.png" alt="Choonsik" />
-</div>
-
 <header>
 	<h1>할 일 상세 정보</h1>
 </header>
@@ -171,16 +161,13 @@
 
 	<div class="button-group">
 		<a th:href="@{/todos/{id}/edit(id=${todo.id})}" class="button">수정</a>
-
 		<form method="POST" th:action="@{/todos/delete}" style="display: inline;">
 			<input type="hidden" name="_method" value="DELETE" />
 			<input type="hidden" name="id" th:value="${todo.id}" />
 			<button type="submit">삭제</button>
 		</form>
-
 		<a th:href="@{/todos}" class="button">목록으로 돌아가기</a>
 	</div>
 </div>
 </body>
 </html>
-

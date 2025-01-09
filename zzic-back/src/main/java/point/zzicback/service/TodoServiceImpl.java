@@ -42,8 +42,9 @@ public class TodoServiceImpl implements TodoService {
     public void updateDone(Todo todo, boolean done) {
         todo.setDone(done);
         int updateRows = this.todoMapper.updateDone(todo);
-        if (updateRows == 0) {
-            throw new RuntimeException("업데이트할 Todo가 없습니다.");
+        if(updateRows == 0) {
+            throw new RuntimeException("업데이트 할 Todo가 없습니다.");
         }
     }
+
 }

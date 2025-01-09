@@ -2,6 +2,8 @@ package point.zzicback.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -13,6 +15,8 @@ import java.io.Serializable;
  * Lombok의 @Data로 게터/세터, equals, hashCode, toString 메서드를 자동 생성합니다.
  */
 @Data
+@Getter
+@Setter
 @Schema(description = "TO-DO 항목을 표현하는 모델")
 public class Todo implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -38,8 +42,6 @@ public class Todo implements Serializable {
      * TO-DO 항목 완료 여부
      */
     @Schema(description = "To-Do 항목의 완료 여부", example = "false")
-    private Boolean done = false;
-
-
+    private Boolean done;
 
 }

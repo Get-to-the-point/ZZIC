@@ -36,19 +36,28 @@ public class TodoViewController {
         return "TodoDetail";
     }
 
-    @PostMapping("/todos/done")
-    public String done(@RequestParam("id")Long id) {
-        Todo todo = todoService.getTodoById(id);
-        todoService.updateDone(todo, true);
+    @PostMapping("/todos/toggle")
+    public String toggle(@RequestParam("id") Long id) {
+        Todo todo = todoService.getTodoById(id); // Todo 객체 가져오기
+        todo.setDone(!todo.getDone());  // done 값을 반대로 변경
+        todoService.updateDone(todo, todo.getDone());   // 업데이트
         return "redirect:/todos";
     }
 
-    @PostMapping("/todos/undone")
-    public String undone(@RequestParam("id") Long id) {
-        Todo todo = todoService.getTodoById(id);
-        todoService.updateDone(todo, false);
-        return "redirect:/todos";
-    }
+
+//    @PostMapping("/todos/done")
+//    public String done(@RequestParam("id")Long id) {
+//        Todo todo = todoService.getTodoById(id);
+//        todoService.updateDone(todo, true);
+//        return "redirect:/todos";
+//    }
+//
+//    @PostMapping("/todos/undone")
+//    public String undone(@RequestParam("id") Long id) {
+//        Todo todo = todoService.getTodoById(id);
+//        todoService.updateDone(todo, false);
+//        return "redirect:/todos";
+//    }
 
     @DeleteMapping("/todos/delete")
     public String delete(@RequestParam Long id) {

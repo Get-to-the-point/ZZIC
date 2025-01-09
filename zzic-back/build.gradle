@@ -47,6 +47,7 @@ dependencies {
     // Lombok (컴파일 타임 의존성)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     // MySQL 데이터베이스 드라이버
     runtimeOnly 'com.mysql:mysql-connector-j'

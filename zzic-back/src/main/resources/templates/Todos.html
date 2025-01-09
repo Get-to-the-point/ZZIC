@@ -2,67 +2,69 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>ZZIC Todo List</title>
+	<title>TO DO LIST</title>
 	<style>
       :root {
-          --primary-yellow: #FFD93D;
-          --secondary-yellow: #FFF4BD;
-          --accent-pink: #FFB6B6;
-          --brown: #4A3F35;
-          --plaid-bg: #ffffee;
-          --plaid-line: #dbdbdb;
+          --pastel-pink: #FFD6E0;  /* 메인 색상을 따뜻한 핑크로 변경 */
+          --pastel-lavender: #E8D5F9;  /* 보조 색상 */
+          --pastel-mint: #C3E8E2;  /* 민트색 약간 더 부드럽게 */
+          --pastel-peach: #FFE2D1;  /* 피치색 더 부드럽게 */
+          --pastel-yellow: #FFF3D6;  /* 새로운 파스텔 옐로우 추가 */
+					--pastel-green: #D1F2C9;  /* 새로운 파스텔 그린 추가 */
+					--pastel-sky: #cdfaec;  /* 새로운 파스텔 하늘 추가 */
+          --grid-color: #EAEAEA;  /* 그리드 라인 더 연하게 */
+          --text-color: #7A7A7A;  /* 텍스트 색상 더 부드럽게 */
       }
 
-      /* Plaid Background Pattern */
       body {
           font-family: "Comic Sans MS", cursive;
-          color: var(--brown);
+          color: var(--text-color);
           max-width: 800px;
           margin: 0 auto;
           padding: 2rem;
-          background-color: var(--plaid-bg);
+          background-color: white;
           background-image:
-                  linear-gradient(var(--plaid-line) 2px, transparent 2px),
-                  linear-gradient(90deg, var(--plaid-line) 2px, transparent 2px),
-                  linear-gradient(var(--plaid-line) 1px, transparent 1px),
-                  linear-gradient(90deg, var(--plaid-line) 1px, transparent 1px);
-          background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-          background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+                  linear-gradient(var(--grid-color) 1px, transparent 1px),
+                  linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+          background-size: 20px 20px;
       }
 
-      header h1 {
-          color: var(--brown);
+      header {
           text-align: center;
-          font-size: 3rem;
           margin-bottom: 2rem;
-          text-shadow: 2px 2px 0 var(--accent-pink);
-      }
-
-      .choonsik-header {
-          width: 150px;
-          height: 150px;
-          margin: -75px auto 0;
           position: relative;
-          z-index: 2;
       }
 
-      .choonsik-header img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-          border: 4px solid var(--primary-yellow);
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      h1 {
+          display: inline-block;
+          background-color: var(--pastel-pink);  /* 제목 배경색 변경 */
+          padding: 0.5rem 2rem;
+          border-radius: 15px;
+          font-size: 2rem;
+          position: relative;
       }
+
+      /* Decorative elements */
+      .star {
+          position: absolute;
+          color: #FFD700;
+          font-size: 1.2rem;
+      }
+
+      .star:nth-child(1) { top: -10px; right: 20px; }
+      .star:nth-child(2) { top: 10px; left: 30px; }
+
+      .heart {
+          position: absolute;
+          color: #FFB6C6;
+          font-size: 1.2rem;
+      }
+
+      .heart:nth-child(1) { bottom: -20px; right: 40px; }
+      .heart:nth-child(2) { bottom: -15px; left: 30px; }
 
       .todo-container {
-          background-color: white;
-          border-radius: 20px;
           padding: 2rem;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          margin-top: 50px;
-          position: relative;
-          z-index: 2;
       }
 
       form {
@@ -74,34 +76,27 @@
 
       input[type="text"], textarea {
           padding: 1rem;
-          border: 3px solid var(--primary-yellow);
-          border-radius: 15px;
+          border: 2px solid var(--pastel-pink);
+          border-radius: 10px;
           font-size: 1rem;
           font-family: inherit;
       }
 
       button {
-          background-color: var(--primary-yellow);
+          background-color: var(--pastel-lavender);  /* 버튼 배경색 변경 */
           border: none;
-          border-radius: 15px;
+          border-radius: 10px;
           padding: 0.8rem 1.5rem;
           font-size: 1rem;
           cursor: pointer;
-          transition: transform 0.2s;
+          transition: all 0.3s ease;
           font-family: inherit;
-          color: var(--brown);
+          color: var(--text-color);
       }
 
       button:hover {
           transform: scale(1.05);
-          background-color: var(--accent-pink);
-      }
-
-      h2 {
-          color: var(--brown);
-          font-size: 2rem;
-          margin: 2rem 0;
-          text-align: center;
+          background-color: var(--pastel-lavender);  /* 호버 색상 변경 */
       }
 
       ul {
@@ -110,50 +105,38 @@
       }
 
       li {
-          background: white;
           margin: 1rem 0;
-          padding: 1.5rem;
-          border-radius: 15px;
+          padding: 1rem;
+          border-radius: 10px;
           display: flex;
           align-items: center;
           gap: 1rem;
-          position: relative;
-          border: 2px solid var(--primary-yellow);
           transition: all 0.3s ease;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
 
-      li::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 20px;
-          right: 20px;
-          height: 10px;
-          background-color: var(--primary-yellow);
-          border-radius: 0 0 10px 10px;
-      }
-
-      li[data-done="true"] {
-          opacity: 0.8;
-          border-color: var(--accent-pink);
-      }
-
-      li[data-done="true"]::before {
-          background-color: var(--accent-pink);
-      }
+      li:nth-child(6n+1) { background-color: var(--pastel-pink); }
+      li:nth-child(6n+5) { background-color: var(--pastel-yellow); }
+      li:nth-child(6n+6) { background-color: var(--pastel-green); }
+      li:nth-child(6n+4) { background-color: var(--pastel-peach); }
+      li:nth-child(6n+2) { background-color: var(--pastel-sky); }
+      li:nth-child(6n+3) { background-color: var(--pastel-mint); }
 
       a {
-          color: var(--brown);
+          color: var(--text-color);
           text-decoration: none;
           font-weight: bold;
           flex-grow: 1;
       }
 
-      a:hover {
-          color: var(--primary-yellow);
+      [data-done="true"] {
+          order: 1;
+          opacity: 0.6;
       }
 
+      #todoList {
+          display: flex;
+          flex-direction: column;
+      }
 	</style>
 
 	<script>
@@ -167,7 +150,20 @@
 			})
 				.then(response => {
 					if (response.ok) {
-						location.reload();
+						const item = document.querySelector(`li[data-id="${id}"]`);
+						const isDone = item.getAttribute('data-done') === 'true';
+						item.setAttribute('data-done', !isDone);
+
+						// Reorder the list
+						const list = document.getElementById('todoList');
+						const items = Array.from(list.children);
+						items.sort((a, b) => {
+							const aDone = a.getAttribute('data-done') === 'true';
+							const bDone = b.getAttribute('data-done') === 'true';
+							return aDone - bDone;
+						});
+
+						items.forEach(item => list.appendChild(item));
 					} else {
 						alert('Error toggling todo');
 					}
@@ -176,22 +172,29 @@
 	</script>
 </head>
 <body>
-
 <header>
-	<h1 th:attr="data-view-transition-name='h1'">Today, Have to ZZIC</h1>
+	<span class="star">⭐</span>
+	<span class="star">⭐</span>
+	<h1>TO DO LIST</h1>
+	<span class="heart">♥</span>
+	<span class="heart">♥</span>
 </header>
 
 <div class="todo-container">
 	<form method="POST" th:action="@{/todos}" enctype="application/x-www-form-urlencoded">
-		<input type="text" name="title" placeholder="무엇을 해야하나요?" />
-		<textarea name="description" placeholder="자세한 설명"></textarea>
-		<button type="submit">할 일 추가</button>
+		<input type="text" name="title" placeholder="할 일을 입력하세요" required />
+		<textarea name="description" placeholder="상세 설명을 입력하세요"></textarea>
+		<button type="submit">추가하기</button>
 	</form>
 
-	<h2>할 일</h2>
-	<ul>
-		<li th:each="todo : ${todos}" th:key="${todo.id}" th:attr="data-done=${todo.done}">
-			<button type="button" th:text="${todo.done} ? '미완료' : '완료'" th:onclick="'toggleTodo(' + ${todo.id} + ')'"></button>
+	<ul id="todoList">
+		<li th:each="todo : ${todos}"
+				th:key="${todo.id}"
+				th:attr="data-done=${todo.done}, data-id=${todo.id}"
+				th:style="${todo.done ? 'order: 1' : 'order: 0'}">
+			<button type="button"
+							th:text="${todo.done ? '미완료' : '완료'}"
+							th:onclick="'toggleTodo(' + ${todo.id} + ')'"></button>
 			<a th:href="@{/todos/{id}(id=${todo.id})}" th:text="${todo.title}"></a>
 			<form method="POST" th:action="@{/todos/delete}" style="display: inline;">
 				<input type="hidden" name="_method" value="DELETE" />

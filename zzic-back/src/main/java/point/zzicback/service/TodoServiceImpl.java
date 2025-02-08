@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import point.zzicback.mapper.TodoMapper;
 import point.zzicback.model.Todo;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -15,8 +16,9 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public List<Todo> getTodoList() {
-        return this.todoMapper.selectAll();
-    }
+        List<Todo> todoList = this.todoMapper.selectAll();
+        todoList.sort(Comparator.comparing(Todo::getId).reversed());  // ✅ ID 기준 내림차순 정렬
+        return todoList;    }
 
     @Override
     public Todo getTodoById(Long id) {

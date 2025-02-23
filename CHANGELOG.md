@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0](https://github.com/Get-to-the-point/ZZIC-API/compare/v1.0.1...v1.1.0) (2025-02-23)
+
+
+### Features
+
+* 버전 강제 증6 ([45afafd](https://github.com/Get-to-the-point/ZZIC-API/commit/45afafdbef27646ead536889009ed4892d07e3dc))
+
+
+### Bug Fixes
+
+* 버전 강제 증가 테스트2 ([3125393](https://github.com/Get-to-the-point/ZZIC-API/commit/312539321abecd1c19088ea056a0913ddd8654f8))
+* 버전 강제 증가 테스트3 ([d69b76c](https://github.com/Get-to-the-point/ZZIC-API/commit/d69b76c35e7e160b215b638fbf2807bacdf363f6))
+* 버전 강제 증가 테스트4 ([eee995e](https://github.com/Get-to-the-point/ZZIC-API/commit/eee995e6f4a39e409777ac1b0445a242db9cb1fa))
+* 버전 강제 증가 테스트5 ([7ef68ce](https://github.com/Get-to-the-point/ZZIC-API/commit/7ef68cea663981908d1dc40d4b7525aae283c774))
+* 버전 강제 증가 테스트6 ([59da507](https://github.com/Get-to-the-point/ZZIC-API/commit/59da507c127707a57764839d8ce7f4db663a4e00))
+* 버전 강제 증가 테스트6 ([12e0dc2](https://github.com/Get-to-the-point/ZZIC-API/commit/12e0dc28ea30745e3a47ef178923df0b5103d0fb))
+
 ## [1.0.1](https://github.com/Get-to-the-point/ZZIC-API/compare/v1.0.0...v1.0.1) (2025-02-23)
 
 
